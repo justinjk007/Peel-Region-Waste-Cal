@@ -3,6 +3,13 @@ from ics import Calendar, Event
 from collections import OrderedDict
 
 def rreplace(string, old, new, times):
+    """
+    Serach reverse and replace last occurrence
+    String = main string
+    old = to be replaced
+    new = replaced with
+    times = how many replacements from the back
+    """
     li = string.rsplit(old, times)
     return new.join(li)
 

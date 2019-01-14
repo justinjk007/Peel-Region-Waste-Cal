@@ -8,6 +8,7 @@ virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
 venv/bin/python2.7 main.py
+venv/bin/python2.7 parse_data.py <address_url>
 
 deactivate # To deactivate environment after use
 #+END_SRC
