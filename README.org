@@ -13,6 +13,12 @@ venv/bin/python2.7 parse_data.py <address_url>
 deactivate # To deactivate environment after use
 #+END_SRC
 
+To run the server
+#+begin_src sh
+export FLASK_APP=app.py
+flask run
+#+end_src
+
 
 Import the =Waste disposal calendar.ics= into your calendar. I suggest
 creating new calendar anywhere because loaded file cannot be unloaded.
