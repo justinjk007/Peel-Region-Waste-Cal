@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 from datetime import datetime
 from ics import Calendar, Event
 from collections import OrderedDict
 import requests
 from bs4 import BeautifulSoup
+import StringIO
 
 def rreplace(string, old, new, times):
     """
@@ -65,8 +66,8 @@ def generate_ics_from_data(content):
         description_for_the_day = '' # Reset this
         del e # Delete event content after appending to the calendar
     # Write data into ics file
-    with open('Waste disposal calendar.ics', 'w') as my_file:
-        my_file.writelines(c)
+    # with open('Waste disposal calendar.ics', 'w') as my_file:
+    #     my_file.writelines(c)
 
 def parse_data_from_url(my_referer):
     """
@@ -96,6 +97,10 @@ def index():
     name = None
     if request.method == 'POST' and 'name' in request.form:
         name = request.form['name']
+    strIO = StringIO.StringIO()
+    strIO.write('Hello from Dan Jacob and Stephane Wirtel !')
+    strIO.seek(0)
+    # return send_file(strIO, attachment_filename="testing.txt",as_attachment=True)
     return render_template('index.html', name=name)
 
 if __name__ == '__main__':
