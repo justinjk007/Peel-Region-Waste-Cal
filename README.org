@@ -21,3 +21,5 @@ Import the =Waste disposal calendar.ics= into your calendar. I suggest
 creating new calendar anywhere because loaded file cannot be unloaded.
 
 Get your referrer url from here: http://www.peelregion.ca/waste-scripts/when-does-it-go/
+
+App is deployed here: https://waste-cal.herokuapp.com/
