@@ -8,7 +8,8 @@ import StringIO
 import unicodedata
 
 # TODO : Remove 2019 to current year
-# TODO : Stop Hardcoding date_to_start_calendar
+# TODO : Stop Hardcoding date_to_start_calendar-f
+# TODO : Handle, "today" at the end of the dates that comes when we request info during a waste collection day
 
 def rreplace(string, old, new, times):
     """
@@ -25,22 +26,19 @@ def generate_ics_from_data(content):
     """
     Parameter content will be the raw_data parsed in text form, convert that and return in ics format
     """
-    import pdb; pdb.set_trace()
     dates_dictionary = OrderedDict() # Dictionary with Dates and number of entries for each day
     dates_dictionary_formatted = OrderedDict() # Same dictionary formatted dates
     description = list() # Store the description of events happening each day
     YEAR = '2019'
-    content = unicodedata.normalize('NFKD', content).encode('ascii','ignore')
-    # content = [x.strip() for x in content] # Remove whitespace and newline
-    content = content.rstrip()
+    YEAR = unicode(YEAR, 'utf-8')
+    content = content.split('\n') # Split into lines and return a list
     file_data = filter(None, content) # remove empty items
     # Parse data into Dates and events
     date = ''
     event_num = 0
     for x in file_data :
         # If the last char of a line is a number it is date
-        x_code = unicode(x, 'utf-8')
-        if x_code[-1:].isnumeric():
+        if x[-1:].isnumeric():
             date = x
             event_num = 0
             dates_dictionary.update({date:event_num})
@@ -81,7 +79,7 @@ def parse_data_from_url(my_referer):
     string
     """
     date_to_start_calendar = "2019-01-01"
-    days=60
+    days=400
     url = "http://www.peelregion.ca/waste-scripts/when-does-it-go/nextCollectionHTML.asp?service=bm-cr-mon-b&days="+str(days)+"&date="+date_to_start_calendar+"&hidden=0"
     s = requests.Session()
     s.headers.update({'referer': my_referer})
@@ -104,11 +102,11 @@ def index():
         strIO = StringIO.StringIO()
         raw_data = parse_data_from_url(url)
         calender_data = generate_ics_from_data(raw_data)
-        strIO.write(str(raw_data))
+        strIO.write(str(calender_data))
         strIO.seek(0)
-        return send_file(strIO, attachment_filename="url.txt",as_attachment=True)
+        return send_file(strIO, attachment_filename="Waste disposal calendar.ics",as_attachment=True)
     else:
         return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)

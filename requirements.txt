@@ -2,3 +2,4 @@ ics
 Flask
 requests
 beautifulsoup4
+gunicorn
