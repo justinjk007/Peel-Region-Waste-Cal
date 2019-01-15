@@ -6,6 +6,9 @@ import requests
 from bs4 import BeautifulSoup
 import StringIO
 
+# TODO : Remove 2019 to current year
+# TODO : Stop Hardcoding date_to_start_calendar
+
 def rreplace(string, old, new, times):
     """
     Serach reverse and replace last occurrence
@@ -32,7 +35,7 @@ def generate_ics_from_data(content):
     event_num = 0
     for x in file_data :
         # If the last char of a line is a number it is date
-        # x_code = unicode(x, 'utf-8') # Apparently web content is already unicode
+        # x_code = unicode(x, 'utf-8') # Apparently web content is already unicode, you only need it after parsing a file
         if x[-1:].isnumeric():
             date = x
             event_num = 0
@@ -86,16 +89,18 @@ def parse_data_from_url(my_referer):
     return soup.get_text() # Get remaining text data
 
 app = Flask(__name__)
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    """
+    Serves index.html
+    """
     url = None
     if request.method == 'POST' and 'url' in request.form:
         url = request.form['url']
         strIO = StringIO.StringIO()
         raw_data = parse_data_from_url(url)
-        calender_data = generate_ics_from_data(raw_data)
-        strIO.write(str(calender_data))
+        # calender_data = generate_ics_from_data(raw_data)
+        strIO.write(str(raw_data))
         strIO.seek(0)
         return send_file(strIO, attachment_filename="url.txt",as_attachment=True)
     else:
