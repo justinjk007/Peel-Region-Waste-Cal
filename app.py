@@ -32,8 +32,8 @@ def generate_ics_from_data(content):
     event_num = 0
     for x in file_data :
         # If the last char of a line is a number it is date
-        x_code = unicode(x, 'utf-8')
-        if x_code[-1:].isnumeric():
+        # x_code = unicode(x, 'utf-8') # Apparently web content is already unicode
+        if x[-1:].isnumeric():
             date = x
             event_num = 0
             dates_dictionary.update({date:event_num})
@@ -65,9 +65,7 @@ def generate_ics_from_data(content):
         c.events.add(e)
         description_for_the_day = '' # Reset this
         del e # Delete event content after appending to the calendar
-    # Write data into ics file
-    # with open('Waste disposal calendar.ics', 'w') as my_file:
-    #     my_file.writelines(c)
+    return c # Return the calendar data
 
 def parse_data_from_url(my_referer):
     """
@@ -85,23 +83,23 @@ def parse_data_from_url(my_referer):
     # kill all script and style elements
     for script in soup(["script", "style"]):
         script.extract()    # rip out style and script tags
-    text = soup.get_text() # Get remaining text data
-    # with open('Waste.txt', 'w') as my_file:
-    #     my_file.writelines(text)
-    return text
+    return soup.get_text() # Get remaining text data
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    name = None
-    if request.method == 'POST' and 'name' in request.form:
-        name = request.form['name']
-    strIO = StringIO.StringIO()
-    strIO.write('Hello from Dan Jacob and Stephane Wirtel !')
-    strIO.seek(0)
-    # return send_file(strIO, attachment_filename="testing.txt",as_attachment=True)
-    return render_template('index.html', name=name)
+    url = None
+    if request.method == 'POST' and 'url' in request.form:
+        url = request.form['url']
+        strIO = StringIO.StringIO()
+        raw_data = parse_data_from_url(url)
+        calender_data = generate_ics_from_data(raw_data)
+        strIO.write(str(calender_data))
+        strIO.seek(0)
+        return send_file(strIO, attachment_filename="url.txt",as_attachment=True)
+    else:
+        return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
