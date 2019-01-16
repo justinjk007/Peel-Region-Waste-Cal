@@ -58,7 +58,6 @@ def generate_ics_from_data(content):
     description_for_the_day = '' # Initialize empty description so it can be appended
     for x, y in dates_dictionary_formatted.items():
         e = Event()
-        e.name = "Waste Collection day"
         for i in range(y):
             description_for_the_day += description.pop(0)
             description_for_the_day += ', '
@@ -67,7 +66,8 @@ def generate_ics_from_data(content):
         e.begin = x+' 00:00:00'
         e.end = x+' 12:00:00'
         e.make_all_day() # Make the event all day
-        e.description = description_for_the_day
+        e.description = "Waste Collection day"
+        e.name = description_for_the_day
         c.events.add(e)
         description_for_the_day = '' # Reset this
         del e # Delete event content after appending to the calendar
