@@ -6,6 +6,7 @@
    <title>Generate Calendar</title>
    <style>
     .centered {left:25%;width:50%;height:80%;top:25%;position:absolute;text-align:center;}
+    .error{color:red;}
    </style>
   </head>
   <body>
@@ -33,6 +34,9 @@
 	<input type="text" class="pure-input-rounded" name="url">
 	<button type="submit" class="pure-button" name="submit" value="Submit"> Submit </button>
       </form>
+      {% if error %}
+      <p class="error">Something went wrong ! Try Again ! </p>
+      {% endif %}
       <p>
       Import the Waste disposal calendar.ics into your calendar. I suggest
       creating new calendar anywhere because loaded file cannot be unloaded but the new calendar
