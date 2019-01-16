@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 import StringIO
 import unicodedata
+import re
 
 # TODO : Remove 2019 to current year
 # TODO : Stop Hardcoding date_to_start_calendar-f
@@ -80,7 +81,22 @@ def parse_data_from_url(my_referer):
     """
     date_to_start_calendar = "2019-01-01"
     days=400
-    url = "http://www.peelregion.ca/waste-scripts/when-does-it-go/nextCollectionHTML.asp?service=bm-cr-mon-b&days="+str(days)+"&date="+date_to_start_calendar+"&hidden=0"
+    # Find the service id
+    s = requests.Session()
+    html = None
+    try:
+        html = s.get(my_referer) # Get raw html data
+    except requests.exceptions.RequestException as e:
+        # Failed tp retrieve, so pass on with the default id boiii
+        serive_id='bm-cr-mon-b' # Deafult service_id in case people don't know how to read instructions
+    if html != None:
+        soup = BeautifulSoup(html.content,"html.parser")
+        serive_id = re.search('currentService\ =\ \"(.+)\"',soup.get_text())
+        if serive_id != None:
+            serive_id = serive_id.groups()[0]
+        else:
+            serive_id='bm-cr-mon-b' # Deafult service_id in case people don't know how to read instructions
+    url = "http://www.peelregion.ca/waste-scripts/when-does-it-go/nextCollectionHTML.asp?service="+serive_id+"&days="+str(days)+"&date="+date_to_start_calendar+"&hidden=0"
     s = requests.Session()
     s.headers.update({'referer': my_referer})
     html = s.get(url) # Get raw html data
@@ -104,7 +120,7 @@ def index():
         calender_data = generate_ics_from_data(raw_data)
         strIO.write(str(calender_data))
         strIO.seek(0)
-        return send_file(strIO, attachment_filename="Waste disposal calendar.ics",as_attachment=True)
+        return send_file(strIO, attachment_filename="test.txt",as_attachment=True)
     else:
         return render_template('index.html')
 

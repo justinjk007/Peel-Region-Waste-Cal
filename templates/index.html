@@ -5,19 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
    <title>Generate Calendar</title>
    <style>
-    .centered {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      /* bring your own prefixes */
-      transform: translate(-50%, -50%); /* This moved the div above 50% if the divs size to the left and 100% if the divs size up */
-    }
+    .centered {left:25%;width:50%;height:80%;top:25%;position:absolute;text-align:center;}
    </style>
   </head>
   <body>
-    <div class="centered">
+      <div class="centered">
       <h2>Disclaimer!</h2>
-      <ul>
+      <ul style="list-style-type:none">
 	<li>This app is not official or from The Region of Peel</li>
 	<li>No data is saved, I can't afford it really</li>
 	<li>This is really hacky, so use it while Peel Region allows it</li>
@@ -39,10 +33,10 @@
 	<input type="text" class="pure-input-rounded" name="url">
 	<button type="submit" class="pure-button" name="submit" value="Submit"> Submit </button>
       </form>
-
       <p>
       Import the Waste disposal calendar.ics into your calendar. I suggest
-      creating new calendar anywhere because loaded file cannot be unloaded.
+      creating new calendar anywhere because loaded file cannot be unloaded but the new calendar
+      can be deleted.
       </p>
       <br/>
      <a href="https://github.com/justinjk007/Peel-Region-Waste-Cal"> Source code </a>
