@@ -84,8 +84,8 @@ def parse_data_from_url(my_referer):
     try:
         html = s.get(my_referer) # Get raw html data
     except requests.exceptions.RequestException as e:
-        # Failed tp retrieve, so pass on with the default id boiii
-        return False, None
+        # Failed to retrieve, so pass on with the default id boiii
+        return False, 'Did you enter a url?'
     if html != None:
         soup = BeautifulSoup(html.content,"html.parser")
         serive_id = re.search('currentService\ =\ \"(.+)\"',soup.get_text())
@@ -93,7 +93,7 @@ def parse_data_from_url(my_referer):
             serive_id = serive_id.groups()[0]
         else:
             # User probably a wrong url
-            return False, None
+            return False, 'Wrong url!'
     del s
     url = "http://www.peelregion.ca/waste-scripts/when-does-it-go/nextCollectionHTML.asp?service="+serive_id+"&days="+str(days)+"&date="+date_to_start_calendar+"&hidden=0"
     s = requests.Session() # new session
@@ -101,7 +101,7 @@ def parse_data_from_url(my_referer):
     try:
         html = s.get(url) # Get raw html data
     except requests.exceptions.RequestException as e:
-        return False, None # Failed tp retrieve, so pass on with the default id boiii
+        return False, 'Failed to collect data!' # Failed tp retrieve
     if html != None:
         soup = BeautifulSoup(html.content,"html.parser")
         # kill all script and style elements
@@ -109,7 +109,7 @@ def parse_data_from_url(my_referer):
             script.extract()    # rip out style and script tags
         return True, soup.get_text() # Get remaining text data
     else:
-        return False, None # Failed tp retrieve, so pass on with the default id boiii
+        return False, 'Data retrieved was malformed!' # Failed to retrieve
         
 
 app = Flask(__name__)
@@ -122,14 +122,14 @@ def index():
     if request.method == 'POST' and 'url' in request.form:
         url = request.form['url']
         strIO = StringIO.StringIO()
-        success, raw_data = parse_data_from_url(url)
+        success, raw_data_or_error = parse_data_from_url(url)
         if success :
-            calender_data = generate_ics_from_data(raw_data)
+            calender_data = generate_ics_from_data(raw_data_or_error)
             strIO.write(str(calender_data))
             strIO.seek(0)
             return send_file(strIO, attachment_filename="Waste disposal calendar.ics",as_attachment=True)
         else:
-            return render_template('index.html', error='of the hook')
+            return render_template('index.html', error=raw_data_or_error)
     else: # GET
         return render_template('index.html')
 
