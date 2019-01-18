@@ -8,19 +8,13 @@ import StringIO
 import unicodedata
 import re
 
-# TODO : Handle, "today" at the end of the dates that comes when we request info during a waste collection day
-
 YEAR = str(datetime.now().year)
 
-def rreplace(string, old, new, times):
+def rreplace(string_to_replace_on, old, new, times):
     """
     Serach reverse and replace last occurrence
-    String = main string
-    old = to be replaced
-    new = replaced with
-    times = how many replacements from the back
     """
-    li = string.rsplit(old, times)
+    li = string_to_replace_on.rsplit(old, times)
     return new.join(li)
 
 def generate_ics_from_data(content):
@@ -38,6 +32,11 @@ def generate_ics_from_data(content):
     for x in file_data :
         # If the last char of a line is a number it is date
         if x[-1:].isnumeric():
+            date = x
+            event_num = 0
+            dates_dictionary.update({date:event_num})
+        # If the last word is today , that also means it's a date
+        elif x[-7:].lower == ', today':
             date = x
             event_num = 0
             dates_dictionary.update({date:event_num})
