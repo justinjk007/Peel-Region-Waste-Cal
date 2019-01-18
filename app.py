@@ -8,9 +8,9 @@ import StringIO
 import unicodedata
 import re
 
-# TODO : Remove 2019 to current year
-# TODO : Stop Hardcoding date_to_start_calendar-f
 # TODO : Handle, "today" at the end of the dates that comes when we request info during a waste collection day
+
+YEAR = str(datetime.now().year)
 
 def rreplace(string, old, new, times):
     """
@@ -30,8 +30,6 @@ def generate_ics_from_data(content):
     dates_dictionary = OrderedDict() # Dictionary with Dates and number of entries for each day
     dates_dictionary_formatted = OrderedDict() # Same dictionary formatted dates
     description = list() # Store the description of events happening each day
-    YEAR = '2019'
-    YEAR = unicode(YEAR, 'utf-8')
     content = content.split('\n') # Split into lines and return a list
     file_data = filter(None, content) # remove empty items
     # Parse data into Dates and events
@@ -79,8 +77,8 @@ def parse_data_from_url(my_referer):
     peelregion website entered by the people and return text data in a
     string
     """
-    date_to_start_calendar = "2019-01-01"
-    days=400
+    date_to_start_calendar = YEAR+'-01-01' # Make something like 2019-01-01
+    days=400 # Max number of days
     # Find the service id
     s = requests.Session()
     html = None
