@@ -36,8 +36,8 @@ def generate_ics_from_data(content):
             event_num = 0
             dates_dictionary.update({date:event_num})
         # If the last word is today , that also means it's a date
-        elif x[-7:].lower == ', today':
-            date = x
+        elif x[-7:] == '- Today':
+            date = x[:-7] # String the today part before appending
             event_num = 0
             dates_dictionary.update({date:event_num})
         else:
