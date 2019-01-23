@@ -14,14 +14,14 @@
    <title>Generate Calendar</title>
    <style>
     .centered {width: 50em; max-width:90%; padding:10px; margin: 0 auto;}
-    ul {list-style-position: outside;}
+    ul{list-style-position: outside;}
     .error{color:red;}
    </style>
   </head>
   <body>
       <div class="centered">
       <h2>Disclaimer!</h2>
-      <ul">
+      <ul>
 	<li>This app is not official or from The Region of Peel</li>
 	<li>No data is saved, I can't afford it really</li>
 	<li>This is really hacky, so use it while Peel Region allows it</li>
@@ -38,8 +38,8 @@
       </p>
       <br/>
       <form class="pure-form" method="POST" action="">
-	Referrer url:
-	<input type="text" class="pure-input-rounded" name="url">
+	<label for="url">Referrer url:</label>
+	<input type="text" class="pure-input-rounded" id="url" name="url">
 	<button type="submit" class="pure-button" name="submit" value="Submit"> Get i-Cal file! </button>
       </form>
       {% if error %}
