@@ -1,6 +1,6 @@
 * Setup
 
-Make a new virtual environment and Install requirements
+Make a new virtual environment and Install requirements, requires python 2.7
 
 #+BEGIN_SRC sh
 pip install virtualenv
