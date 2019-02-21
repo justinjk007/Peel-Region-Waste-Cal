@@ -24,4 +24,4 @@ Get your referrer url from here: http://www.peelregion.ca/waste-scripts/when-doe
 
 App is deployed here: https://waste-cal.herokuapp.com/
 
-TODO: Move to Python 3
+*TODO:* Move to Python 3
