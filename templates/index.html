@@ -30,10 +30,16 @@
      ul{list-style-position: outside;}
      body{background-color: white;}
      .error{color:red;}
+     button:hover {
+       cursor: no-drop;
+     }
     </style>
   </head>
   <body>
-      <div class="centered">
+    <div class="centered">
+      <h1>
+	<a href="https://peelregion.ca/waste/calendar/">It seems they offer the calender service themselves now.</a>
+      </h1>
       <h2>Disclaimer!</h2>
       <ul>
 	<li>This app is not official or from The Region of Peel</li>
@@ -53,16 +59,16 @@
       <br/>
       <form class="pure-form" method="POST" action="">
 	<label for="url">Referrer url:</label>
-	<input type="text" class="pure-input-rounded" id="url" name="url">
-	<button type="submit" class="pure-button" name="submit" value="Submit"> Get i-Cal file! </button>
+	<input type="text" class="pure-input-rounded" id="url" name="url"  disabled>
+	<button class="pure-button" > Get i-Cal file! </button>
       </form>
       {% if error %}
       <p class="error"> {{error}} </p>
       {% endif %}
       <p>
-      Import the Waste disposal calendar.ics into your calendar. I suggest
-      creating new calendar anywhere because loaded file cannot be unloaded but the new calendar
-      can be deleted.
+	Import the Waste disposal calendar.ics into your calendar. I suggest
+	creating new calendar anywhere because loaded file cannot be unloaded but the new calendar
+	can be deleted.
       </p>
       <br/>
       <a href="mailto:justinjoseph0007@gmail.com">Give me feedback!</a> <br/>
