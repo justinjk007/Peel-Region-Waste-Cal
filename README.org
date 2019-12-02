@@ -1,3 +1,5 @@
+* [[https://peelregion.ca/waste/calendar/][It seems they offer the calender service themselves now.]]
+
 * Setup
 
 Make a new virtual environment and Install requirements, requires python 2.7
